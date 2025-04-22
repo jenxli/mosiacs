@@ -1,6 +1,3 @@
-# OpenCV program to detect face in real time
-# import libraries of python OpenCV 
-# where its functionality resides
 import cv2 
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
