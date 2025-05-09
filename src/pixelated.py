@@ -196,14 +196,14 @@ while 1:
         if use_manual_mosaic:
             custom_mosaic_img_labeled = add_label_with_background(face_mosaic_img.copy(), "Custom Mosaic (Manual)")
         else:
-            custom_mosaic_img_labeled = add_label_with_background(face_mosaic_img.copy(), "Custom Mosaic (NumPy)")
+            custom_mosaic_img_labeled = add_label_with_background(face_mosaic_img.copy(), "Custom Mosaic (NP)")
         
         mosaic_img_labeled = add_label_with_background(apply_mosaic_select_face(img, face_mask, pixel_size=15, use_manual=use_manual_mosaic, use_cv=True).copy(), "Full Mosaic")
     else:
         if use_manual_mosaic:
             custom_mosaic_img_labeled = add_label_with_background(custom_mosaic_img.copy(), "Custom Mosaic (Manual)")
         else:
-            custom_mosaic_img_labeled = add_label_with_background(custom_mosaic_img.copy(), "Custom Mosaic (NumPy)")
+            custom_mosaic_img_labeled = add_label_with_background(custom_mosaic_img.copy(), "Custom Mosaic (NP)")
 
         
         mosaic_img_labeled = add_label_with_background(mosaic_img.copy(), "Full Mosaic")
