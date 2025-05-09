@@ -192,8 +192,6 @@ while 1:
     img_labeled = add_label_with_background(img.copy(), "Original Image")
     face_mask_labeled = add_label_with_background(cv2.cvtColor(face_mask.copy(), cv2.COLOR_GRAY2BGR), "Face Mask Detection")
     
-    
-
     if only_face:
         if use_manual_mosaic:
             custom_mosaic_img_labeled = add_label_with_background(face_mosaic_img.copy(), "Custom Mosaic (Manual)")
