@@ -95,7 +95,7 @@ def detect_face_mask(img):
 
     return mask
 
-def apply_mosaic_select_face(img, mask, pixel_size, use_manual):
+def apply_mosaic_select_face(img, mask, pixel_size, use_manual, use_cv):
     """
     Mosaic Type: Pixelization
     Method: Manual. Applies the mosaic effect selectively to the detected face using
@@ -110,7 +110,10 @@ def apply_mosaic_select_face(img, mask, pixel_size, use_manual):
     Returns:
         result: final altered and pixelated version of the input img, where only the face is mosaic-ified
     """
-    mosaic = apply_mosaic_manual(img, pixel_size) if use_manual else apply_mosaic_manuel_np(img, pixel_size)
+    if use_cv:
+        mosaic = apply_mosaic_cv2(img, pixel_size=10)
+    else:
+        mosaic = apply_mosaic_manual(img, pixel_size) if use_manual else apply_mosaic_manuel_np(img, pixel_size)
     result = img.copy()
     result[mask == 255] = mosaic[mask == 255]
     return result
@@ -155,6 +158,7 @@ capture = cv2.VideoCapture(0)
 # LINE BELOW FOR INPUT IMAGE:
 # capture = '/Users/oliviaheng/Desktop/CSCI 1430/finalproject-oliviaaheng/mosiacs/tompkin.png'
 use_manual_mosaic = False
+only_face = False
 
 while 1: 
     #LINE BELOW FOR LIVE CAMERA FEED
@@ -169,25 +173,43 @@ while 1:
     Usage: By clicking the 'm' key on the keyboard while the program is running, 
            the manual mosaic will switch between the pure manual (slow) and the 
            manuel with NumPy (fast)
+           By clicking the 'f' key on the keyboard while the program is running, 
+           the mosaic will switch between the full image manual and the 
+           detected face only mosaic
     """
     key = cv2.waitKey(30) & 0xFF
     if key == ord('m'):
         use_manual_mosaic = not use_manual_mosaic
+    if key == ord('f'):
+        only_face = not only_face
     elif key == 27:
         break
 
     mosaic_img = apply_mosaic_cv2(img, pixel_size=10)  
-    face_mosaic_img = apply_mosaic_select_face(img, face_mask, pixel_size=15, use_manual=use_manual_mosaic)
+    face_mosaic_img = apply_mosaic_select_face(img, face_mask, pixel_size=15, use_manual=use_manual_mosaic, use_cv=False)
     custom_mosaic_img = apply_mosaic_manual(img, pixel_size=10) if use_manual_mosaic else apply_mosaic_manuel_np(img, pixel_size=10)
 
     img_labeled = add_label_with_background(img.copy(), "Original Image")
-    mosaic_img_labeled = add_label_with_background(mosaic_img.copy(), "Full Mosaic")
     face_mask_labeled = add_label_with_background(cv2.cvtColor(face_mask.copy(), cv2.COLOR_GRAY2BGR), "Face Mask Detection")
     
-    if use_manual_mosaic:
-        custom_mosaic_img_labeled = add_label_with_background(custom_mosaic_img.copy(), "Custom Mosaic (Manual)")
+    
+
+    if only_face:
+        if use_manual_mosaic:
+            custom_mosaic_img_labeled = add_label_with_background(face_mosaic_img.copy(), "Custom Mosaic (Manual)")
+        else:
+            custom_mosaic_img_labeled = add_label_with_background(face_mosaic_img.copy(), "Custom Mosaic (NumPy)")
+        
+        mosaic_img_labeled = add_label_with_background(apply_mosaic_select_face(img, face_mask, pixel_size=15, use_manual=use_manual_mosaic, use_cv=True).copy(), "Full Mosaic")
     else:
-        custom_mosaic_img_labeled = add_label_with_background(custom_mosaic_img.copy(), "Custom Mosaic (Fast)")
+        if use_manual_mosaic:
+            custom_mosaic_img_labeled = add_label_with_background(custom_mosaic_img.copy(), "Custom Mosaic (Manual)")
+        else:
+            custom_mosaic_img_labeled = add_label_with_background(custom_mosaic_img.copy(), "Custom Mosaic (NumPy)")
+
+        
+        mosaic_img_labeled = add_label_with_background(mosaic_img.copy(), "Full Mosaic")
+
 
     top_row = np.hstack((img_labeled, mosaic_img_labeled))
     bottom_row = np.hstack((face_mask_labeled, custom_mosaic_img_labeled))
