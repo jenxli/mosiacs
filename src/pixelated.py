@@ -150,11 +150,17 @@ def add_label_with_background(img, text, position=(50, 50)):
 """
 Method Calls and Initializations
 """
+#LINE BELOW FOR LIVE CAMERA FEED
 capture = cv2.VideoCapture(0)
+# LINE BELOW FOR INPUT IMAGE:
+# capture = '/Users/oliviaheng/Desktop/CSCI 1430/finalproject-oliviaaheng/mosiacs/tompkin.png'
 use_manual_mosaic = False
 
 while 1: 
+    #LINE BELOW FOR LIVE CAMERA FEED
     ret, img = capture.read() 
+    # LINE BELOW FOR INPUT IMAGE:
+    # img = cv2.imread('/Users/oliviaheng/Desktop/CSCI 1430/finalproject-oliviaaheng/mosiacs/tompkin.png')
     face_mask = detect_face_mask(img)
 
     """
@@ -189,5 +195,5 @@ while 1:
 
     cv2.imshow("4-Way Mosaic Comparison with Dynamic Labels", comparison_screen)
 
-capture.release()
+# capture.release()
 cv2.destroyAllWindows()
