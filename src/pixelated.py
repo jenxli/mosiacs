@@ -6,7 +6,6 @@ import numpy as np
 
 # Web Camera Set-Up using OpenCV's CascadeClassifier and VideoCapture
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-capture = cv2.VideoCapture(0)
 
 def apply_mosaic_cv2(img, pixel_size):
     """
