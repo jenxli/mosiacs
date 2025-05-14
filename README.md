@@ -1,1 +1,1 @@
-Hi there, welcome to Mosaics! Run main-pixelated.py for a functional demo of pixelated mosaics with live capture, and run main-segmentation for a quite slow (but somewhat functional) demo of mosaics with Delaunay Triangulation.
+Hi there, welcome to Mosaics! Run src/main-pixelated.py for a functional demo of pixelated mosaics with live capture, and run src/main-segmentation for a quite slow (but somewhat functional) demo of mosaics with Delaunay Triangulation.
